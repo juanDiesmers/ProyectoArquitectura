@@ -2,34 +2,63 @@
 ; Multiplica dos valores de 8 bits almacenados en memoria
 ; El resultado se almacena en memoria en dos registros de 8 bits
 
-MULTIPLICAND: 0x07
-MULTIPLIER: 0X03
-COUNT: 0x08
+MULTIPLICADO: 
+        0x07
+MULTIPLICADOR: 
+        0x03
+COUNT: 
+        0x08
+A1:     
+        0x00
+Q1:
+        0x00
 
-; A<-0, Q-1<-0
-          MOV A1, 0x00
-          MOV Q1, 0x00
+LOOP:   ;Inicio del loop
+        ;Cargamos "Q" (con el bit menos significativo de multiplicador) en ACC
+        MOV ACC, MULTIPLICADOR
+        MOV DPTR,ACC
+        MOV ACC,[DPTR]
+        AND ACC,0x01
+        MOV A,ACC   ; Guarda "q" en A para uso poseterior      
+        ;Cargarmos Q-1 en ACC
+        MOV ACC,Q1
+        MOV DPTR, ACC
+        MOV ACC,[DPTR]
+        AND ACC,0x01
+        ;verificanos que Q y Q-1 sen 00
+        JZ CHECK00   
 
-          ; M<-MULTIPLICAND
-          MOV ACC, MULTIPLICAND
-          MOV M, ACC
+        ; Si Q-1 no es 0, verifica que Q y Q-1 son 11
+        MOV ACC, A ;Recuperamos "Q" del regustro A
+        INV ACC
+        JZ CHEK10_01; Si q es 1 osea q-1 podrain ser 11, 10 o 01=
+CHECK00:
+        MOV ACC,A; Recuperamos Q del registro A
+        JZ SHIFT_RIGHT ; Si Q es tambien 0 osea Q y Q-1 = 00
+        JMP CHEK10_01 ; Si Q no es 0, entonces Q y Q-1 podrian ser 10 o 01
+CHEK10_01:
+        MOV ACC, A ; Recuperamos "Q" del regustro A
+        JZ Add ; Si Q e 0, entonces Q y Q-1 SON 01, por lo que salta a Add
 
-          ; Q<-MULTIPLIER
-          MOV ACC, MULTIPLIER
-          MOV Q, ACC
+        ;En caso de que no es 0, entonces q y Q-1 prodien ser 11 o 10
+        MOV ACC, Q1  ;Tomamos Q-1
+        MOV ACC, DPTR,
+        MOV ACC, [DPTR]
+        AND ACC, 0x01 
+        INV ACC
+        JZ SUBB  ; si Q-1 = 0, entoces Q  Q-1 son 10 por lo tanto salta a subtract
 
-LOOP:   ;Incia el bucle
-        ; ¿Q0,Q-1==01 o 10?
-        MOV A, Q1  ; Mueve el valor de Q1 al registro A
-        AND A, Q   ; Realiza una operacion AND bit a bit entre el valor en A y el valor de Q
-        ; Esta operacion se guarda en A
-        ;Si el resultado de esta operación AND es cero, significa que los bits Q0 y Q1 son iguales a 00 o 11. 
-        ;En ese caso, el código salta a la etiqueta SHIFT_RIGHT (que representa una operación 
-        ;de desplazamiento a la derecha). Si el resultado no es cero (es decir, los bits Q0 y Q1 son iguales 
-        ;a 01 o 10), el código continúa ejecutando la siguiente instrucción.
-        JZ SHIFT_RHIGHT ; Salta si Q0, Q1 == 00 o 11
-        JC Add   
-        
+SHIFT_RIGHT:
+        ;La idea es mover los bits de los operadores A, Q, Q-1
+        MOV A1, [DPTR]         ; Cargar el valor de DPTR en A1
+        AND A1, #0FEH          ; Desplazar los bits hacia la 
+        ;derecha (#0FEH, representa el valor binario 1111 1110, 
+        ;lo hace que al usarse con un AND, se desplace el valor 
+        ;de A1 hacia la derecha y establece el MSB a 1)   
+        ;JMP COUNT     
+       
+CONTINUE:
+
 SUBB:  ; si Q0, Q-1 == 10 resta M a A
         MOV ACC, A1        ; Carga A1 en Acc
         MOV DPTR, ACC      ; Mueve el valor de ACC a DPTR
@@ -71,27 +100,21 @@ Después, carga el valor de M en ACC y lo suma al valor de A. Finalmente, salta 
 llamada STORE_A1 para almacenar el resultado en el registro A1.
 */
 
-STORE_A1: MOV ACC, A1      ; Carga A1 en ACC
-          MOV DPTR, ACC    ; Mueve el valor de ACC a DPTR
-          MOV ACC, A       ; Carga A en ACC
-          MOV [DPTR],ACC   ; Almacena el valor de ACC en la direccion de memoria apuntada por DPTR
-          JMP SHIFT_RIGHT  ; Salta a SHIFT_RIGHT
+STORE_A1: 
+        MOV ACC, A1      ; Carga A1 en ACC
+        MOV DPTR, ACC    ; Mueve el valor de ACC a DPTR
+        MOV ACC, A       ; Carga A en ACC
+        MOV [DPTR],ACC   ; Almacena el valor de ACC en la direccion de memoria apuntada por DPTR
+        JMP SHIFT_RIGHT  ; Salta a SHIFT_RIGHT
 
-SHIFT_RIGHT:
-        ;La idea es mover los bits de los operadores A, Q, Q-1
-        MOV A1, [DPTR]         ; Cargar el valor de DPTR en A1
-        AND A1, #0FEH          ; Desplazar los bits hacia la 
-        ;derecha (#0FEH, representa el valor binario 1111 1110, 
-        ;lo hace que al usarse con un AND, se desplace el valor 
-        ;de A1 hacia la derecha y establece el MSB a 1)   
-        ;JMP COUNT
+
 
 COUNT:
         MOV ACC, COUNT         # load address of COUNT in ACC
-        JZ FIN_LOOP            # if A = 0, jump to FIN_LOOP
         MOV DPTR, ACC          # move address of COUNT to DPTR
         MOV ACC, [DPTR]        # load [COUNT] in ACC
         MOV A, ACC             # load [COUNT] in A register
+        JZ FIN_LOOP            # if A = 0, jump to FIN_LOOP
         MOV ACC, 0x01          # load CTE 1 in ACC
         INV ACC                # invert 0x01 to obtain complement
         ADD A,ACC              # ACC = [COUNT]-1
