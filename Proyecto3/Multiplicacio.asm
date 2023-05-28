@@ -28,10 +28,12 @@ LOOP:   ;Inicio del loop
         ;verificanos que Q y Q-1 sen 00
         JZ CHECK00   
 
-        ; Si Q-1 no es 0, verifica que Q y Q-1 son 11
-        MOV ACC, A ;Recuperamos "Q" del regustro A
-        INV ACC
-        JZ CHEK10_01; Si q es 1 osea q-1 podrain ser 11, 10 o 01=
+        ; si Q-1 no es 0, verificanos que Q y Q-1 son 11
+        MOV ACC, A ; Recuperamos el valor de Q del registro A
+        INV ACC ; invirete todos los bits en ACC
+        JZ SHIFT_RIGHT
+        JMP CHEK10_01
+        
 CHECK00:
         MOV ACC,A; Recuperamos Q del registro A
         JZ SHIFT_RIGHT ; Si Q es tambien 0 osea Q y Q-1 = 00
@@ -40,7 +42,7 @@ CHEK10_01:
         MOV ACC, A ; Recuperamos "Q" del regustro A
         JZ Add ; Si Q e 0, entonces Q y Q-1 SON 01, por lo que salta a Add
 
-        ;En caso de que no es 0, entonces q y Q-1 prodien ser 11 o 10
+        ;En caso de que no es 0, entonces q y Q-1 prodien ser  10
         MOV ACC, Q1  ;Tomamos Q-1
         MOV ACC, DPTR,
         MOV ACC, [DPTR]
