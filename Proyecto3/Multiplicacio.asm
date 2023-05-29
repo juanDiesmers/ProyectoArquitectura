@@ -55,13 +55,17 @@ CHEK10_01:
         JZ SUBB  ; si Q-1 = 0, entoces Q  Q-1 son 10 por lo tanto salta a subtract
 
 SHIFT_RIGHT:
-        ;La idea es mover los bits de los operadores A, Q, Q-1
-        MOV A1, [DPTR]         ; Cargar el valor de DPTR en A1
-        AND A1, #0FEH          ; Desplazar los bits hacia la 
-        ;derecha (#0FEH, representa el valor binario 1111 1110, 
-        ;lo hace que al usarse con un AND, se desplace el valor 
-        ;de A1 hacia la derecha y establece el MSB a 1)   
-        ;JMP COUNT     
+       ; Desplazamiento a la derecha (Shift Right)
+MOV Q1, Multiplicador         ; Mover el valor de Q al indicador de acarreo (Q1)
+MOV A, Multiplicador         ; Mover el valor de Q al registro A
+MOV Multiplicador, A1         ; Mover el valor de A nuevamente a Q
+ANL Q1, #0b00000001 ; Realizar una operación AND con una máscara para obtener el bit menos significativo de Q1
+MOV A1, Multiplicador         ; Mover el valor de Q a A
+SWAP A1           ; Intercambiar los bits de orden medio en A
+ANL A1, #0b01111111 ; Limpiar el bit más significativo de A
+ORL A1, Q1        ; Realizar una operación OR entre A y el bit menos significativo de Q1
+MOV Multiplicador, A1        ; Mover el resultado final del desplazamiento a Q
+JMP COUNT     
        
 CONTINUE:
 
