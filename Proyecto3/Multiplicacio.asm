@@ -1,7 +1,3 @@
-; Rutina de multiplicacion utilizando el algoritmo de Booth
-; Multiplica dos valores de 8 bits almacenados en memoria
-; El resultado se almacena en memoria en dos registros de 8 bits
-
 MULTIPLICADO: 
         0x07
 MULTIPLICADOR: 
@@ -12,24 +8,36 @@ A1:
         0x00
 Q1:
         0x00
+VALOR:
+        0x00
 
 LOOP:   ;Inicio del loop
         ;Cargamos "Q" (con el bit menos significativo de multiplicador) en ACC
         MOV ACC, MULTIPLICADOR
         MOV DPTR,ACC
         MOV ACC,[DPTR]
-        AND ACC,0x01
-        MOV A,ACC   ; Guarda "q" en A para uso poseterior      
+        MOV A,ACC
+        MOV ACC,0x01
+        AND ACC,A
+        MOV A, ACC
+        MOV ACC,VALOR
+        MOV DPTR,ACC
+        MOV ACC, a
+        MOV [DPTR],ACC ; Guarda "q" en VALOR para uso poseterior      
         ;Cargarmos Q-1 en ACC
         MOV ACC,Q1
         MOV DPTR, ACC
         MOV ACC,[DPTR]
-        AND ACC,0x01
+        MOV A, ACC
+        MOV ACC,0x01
+        AND ACC,A
         ;verificanos que Q y Q-1 sen 00
         JZ CHECK00   
 
         ; si Q-1 no es 0, verificanos que Q y Q-1 son 11
-        MOV ACC, A ; Recuperamos el valor de Q del registro A
+        MOV ACC, VALOR
+        MOV DPTR, ACC
+        MOV ACC,[DPTR] ; Recuperamos el valor de Q del registro A
         INV ACC ; invirete todos los bits en ACC
         JZ SHIFT_RIGHT
         JMP CHEK10_01
