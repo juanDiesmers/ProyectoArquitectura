@@ -70,11 +70,12 @@ SUBB:  ; si Q0, Q-1 == 10 resta M a A
         MOV DPTR, ACC      ; Mueve el valor de ACC a DPTR
         MOV ACC,[DPTR]     ; Carga el valor almacenado en la direccion de memoria apuntada por DPTR en ACC
         MOV A,ACC          ; Mueve el valor almacenado en ACC a A
-        MOV ACC, M 
+        MOV ACC, MULTIPLICADO 
         MOV DPTR, ACC
         MOV ACC, [DPTR]    ; Carga M en ACC
         INV ACC            ; Invierte el valor de ACC
-        ADD A, ACC         ; Suma el  valor de ACC al valor de A
+        ADD ACC, A
+        MOV A,ACC        ; Suma el  valor de ACC al valor de A
         JMP STORE_A1       ; Salta a STORE_A1
 
 ;La función SUBB se utiliza para restar un valor almacenado en el registro M al valor de un registro A. 
@@ -93,10 +94,11 @@ Add:   ; si Q0,Q-1 == 01 suma M a A
         MOV DPTR, ACC       ; Mueve el valor de ACC a DPTR
         MOV ACC,[DPTR]      ; Carga el valor almacenado en la direccion de memoria apuntada por DPTR en ACC
         MOV A,ACC           ; Mueve el valor almacenado en ACC a A
-        MOV ACC, M   
+        MOV ACC, MULTIPLICADO   
         MOV DPTR,ACC
         MOV ACC,[DPTR]      ; Carga M en ACC
-        ADD A, ACC          ; Suma el valor de ACC al valor de A
+        ADD ACC,A           ; Suma el valor de ACC al valor de A
+        MOV A,ACC       
         JMP STORE_A1        ; Salta a STORE_A1
 /*
 La función llamada "Add" se utiliza para sumar el valor de un registro M al valor de un registro A. 
@@ -127,8 +129,8 @@ COUNT:
         JZ FIN_LOOP            # if A = 0, jump to FIN_LOOP
         MOV ACC, 0x01          # load CTE 1 in ACC
         INV ACC                # invert 0x01 to obtain complement
-        ADD A,ACC              # ACC = [COUNT]-1
-        MOV A, ACC             # load [COUNT] -1 into A register        
+        ADD ACC,A
+        MOV A,ACC             # A = [COUNT]-1     
         JMP STORE_COUNT        # go to store_COUNT
 
 STORE_COUNT: MOV ACC, COUNT    # load address of COUNT in ACc       
