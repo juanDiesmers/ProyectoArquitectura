@@ -53,20 +53,190 @@ CHEK10_01:
         AND ACC,0x01 
         INV ACC
         JZ SUBB  ; si Q-1 = 0, entoces Q  Q-1 son 10 por lo tanto salta a subtract
-
-SHIFT_RIGHT:
-       ; Desplazamiento a la derecha (Shift Right)
-MOV Q1, Multiplicador         ; Mover el valor de Q al indicador de acarreo (Q1)
-MOV A, Multiplicador         ; Mover el valor de Q al registro A
-MOV Multiplicador, A1         ; Mover el valor de A nuevamente a Q
-ANL Q1, #0b00000001 ; Realizar una operación AND con una máscara para obtener el bit menos significativo de Q1
-MOV A1, Multiplicador         ; Mover el valor de Q a A
-SWAP A1           ; Intercambiar los bits de orden medio en A
-ANL A1, #0b01111111 ; Limpiar el bit más significativo de A
-ORL A1, Q1        ; Realizar una operación OR entre A y el bit menos significativo de Q1
-MOV Multiplicador, A1        ; Mover el resultado final del desplazamiento a Q
-JMP COUNT     
+        
+        
+MSB_A1:
+; Guardamos el MSB de A1 en la variable MSB_A1 para despues. 
+        MOV ACC, CTE
+        A1
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        MSB ACC
+        MOV A, ACC
+        MOV ACC, CTE
+        MSB_A1
+        MOV DPTR, ACC
+        MOV ACC, A
+        MOV [DPTR], ACC
        
+LSB_A1:
+; Guardamos el LSB de A1 en la variable LSB_A1 para despues.
+        MOV ACC, CTE
+        A1
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        LSB ACC
+        MOV A, ACC
+        MOV ACC, CTE
+        LSB_A1
+        MOV DPTR, ACC
+        MOV ACC, A
+        MOV [DPTR], ACC
+       
+SHIFTRIGHT_MULTIPLICADOR:
+        MOV ACC, CTE
+        MULTIPLICADOR
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        LSR ACC ;Aplicamos un logical shift right en acc 
+        MOV A, ACC
+        
+CAMBIAR_MULTIPLICADOR:
+        MOV ACC, CTE
+        MULTIPLICADOR
+        MOV DPTR, ACC
+        MOV ACC, A
+        MOV [DPTR], ACC
+        
+CAMBIO_MULTIPLICADOR:
+        MOV ACC, CTE
+        A1
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        LSB ACC
+        MOVE A, ACC
+        AND A, A
+        JZ
+        CAMBIAR2_MULTIPLICADOR
+        JMP SUMAR_Q
+        
+SUMAR_Q+0:
+        MOV ACC, CTE
+        MULTIPLICADOR
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        MSB ACC
+        ADD ACC, ACC
+        JZ
+        SUMAR_Q+1
+        JMP CAMBIAR2_MULTIPLICADOR
+        
+SUMAR_Q+1:
+        MOV ACC, CTE
+        M_MSB
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        MOV A, ACC
+        MOV ACC, CTE
+        MULTIPLICADOR
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        ADD ACC, A
+        MOV A, ACC
+
+CAMBIAR2_MULTIPLICADOR:
+        MOV ACC, CTE
+        MULTIPLICADOR
+        MOV DPTR, ACC
+        MOV ACC, A
+        MOV [DPTR], ACC
+        
+
+SHIFTRIGHT_A:
+        ; Desplazamiento a la derecha de A (Shift Right)
+        MOV ACC, CTE ; Cargamos el valor de A1 en ACC
+        A1
+        MOV DPTR, ACC 
+        MOV ACC, [DPTR]
+        LSR ACC ; Realizamos la operacion de Logical Shift Right al ACC
+        MOV A, ACC; Movemos el valor de ACC en A
+       
+CAMBIAR_A1:
+        MOV ACC, CTE
+        A1
+        MOV DPTR, ACC
+        MOV ACC, A
+        MOV [DPTR], ACC
+
+; cambiar el msb de A dependiendo si es 0 o 1
+CAMBIO_A1:
+        MOV ACC, CTE
+        MSB_A1
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        ADD ACC, ACC
+        JZ
+        CAMBIO_0
+        JMP CAMBIO_1
+        
+CAMBIO_0:
+        MOV ACC, CTE
+        A1
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        MSB ACC
+        MOV A, ACC
+        ADD A, A
+        JZ
+        CAMBIAR_A1 ; Si el valor es 1, le restamos la inversa a la mascara
+        MOV ACC, CTE
+        M_MSB
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        MOV A, ACC
+        INV A
+        MOV ACC, CTE
+        A1
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        ADD ACC, A
+        MOV A, ACC
+        
+CAMBIO_1:
+        MOV ACC, CTE
+        A1
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        MSB ACC
+        MOV A, ACC
+        ADD A, A
+        JZ
+        ULTIMO_CAMBIO
+        JMP SHIFT_Q1
+        
+ULTIMO_CAMBIO:
+        MOV ACC, CTE
+        A1
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        MOV A, ACC
+        MOV ACC, CTE
+        M_MSB
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        ADD ACC, A
+        MOV A, ACC
+        
+CAMBIAR2_A1:
+        MOV ACC, CTE
+        A1
+        MOV DPTR, ACC
+        MOV ACC, A
+        MOV [DPTR], ACC
+                
+SHIFTRIGHT_Q1:
+        MOV ACC, CTE
+        VALOR
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        MOV A, ACC
+        MOV ACC, CTE
+        Q1
+        MOV DPTR, ACC
+        MOV ACC, A
+        MOV [DPTR], ACC
+        JMP COUNT
+        
 CONTINUE:
 
 SUBB:  ; si Q0, Q-1 == 10 resta M a A
@@ -160,6 +330,30 @@ ADD ACC, 0x01       ; Sumamos 1 byte de memoria al registro ACC para poder carga
 MOV DPTR, A1        ; Guardamos el contenido de A1 en el registro DPTR
 MOV [DPTR], ACC     ; Guardamos el valor del registro ACC en la direccion de memoria 
                     ;  apuntada por DPTR
+                    
+; Funcion MSB (Instruccion Nueva)
+MSB:
+        MOV A, ACC
+        MOV ACC, CTE
+        M_MSB ; cargamos la mascara para determinar el msb (10000000)
+        
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        AND A, ACC ; hacemos and para encontrar el msb y descartar lo demas
+        LSR7 A, ACC ; hacemos un logical shift right de 7 espacios para dejar el msb como el lsb
+        MOV ACC, A ; guardamos el valor en acc
+        
+ ; Funcion LSB (Instruccion Nueva)
+ LSB: 
+        MOV A, ACC
+        MOV ACC, CTE
+        M_LSB ; cargamos la mascara para determinar el lsb (00000001)
+        
+        MOV DPTR, ACC
+        MOV ACC, [DPTR]
+        AND A, ACC ; hacemos and para encontrar el msb y descartar lo demas
+        MOV ACC, A ; guardamos el valor en acc
+                    
 MULTIPLICADO: 
         0x07
 MULTIPLICADOR: 
@@ -171,4 +365,17 @@ A1:
 Q1:
         0x00
 VALOR:
+        0x00    
+MSB: "Instruccion Nueva" ; opcode 0b10000000
+LSB: "Instruccion Nueva" ; opcode 0b10001000
+
+MSB_A1:
         0x00
+LSB_A1:
+        0x00
+M_MSB:
+        0x01
+M_LSB:
+        0x08
+
+      
