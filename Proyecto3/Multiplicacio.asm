@@ -359,33 +359,33 @@ MSB:
         AND A, ACC ; hacemos and para encontrar el msb y descartar lo demas
         MOV ACC, A ; guardamos el valor en acc
                     
-MULTIPLICADO:   0x07,
-MULTIPLICADOR:  0x03,
-COUNT:          0x08,
-A1:             0x00,
-Q1:             0x00,
-VALOR:          0x00,   
+MULTIPLICADO:   0x07,00000111
+MULTIPLICADOR:  0x03,00000011
+COUNT:          0x08,00001000
+A1:             0x00,00000000
+Q1:             0x00,00000000
+VALOR:          0x00,00000000
 MSB: "Instruccion Nueva" ; opcode 0b10000000
 LSB: "Instruccion Nueva" ; opcode 0b10001000
 
-MSB_A1:         0x00,
-LSB_A1:         0x00,
-M_MSB:          0x01,
-M_LSB:          0x08,
+MSB_A1:         0x00,00000000
+LSB_A1:         0x00,00000000
+M_MSB:          0x01,00000001
+M_LSB:          0x08,00001000
 
-LOOP:
-CHECK00:
-CHEK10_01:
-MSB_A1:
-LSB_A1:
-SHIFTRIGHT_MULTIPLICADOR:
-CAMBIAR_MULTIPLICADOR:
-CAMBIO_MULTIPLICADOR:
-SUMAR_Q+0:
-SUMAR_Q+1:
-CAMBIAR2_MULTIPLICADOR:
-SHIFTRIGHT_A:
-CAMBIAR_A1:
+LOOP:                           00000000,0x00
+CHECK00:                        00100100,0x36
+CHEK10_01:                      00101011,0x2B
+MSB_A1:                         00111010,0x3A
+LSB_A1:                         00111010,0x3A
+SHIFTRIGHT_MULTIPLICADOR:       01010110,0x56
+CAMBIAR_MULTIPLICADOR:          01011110,0x5E
+CAMBIO_MULTIPLICADOR:           01100101,0x65
+SUMAR_Q+0:                      01110001,0x71
+SUMAR_Q+1:                      01111100,0x7C
+CAMBIAR2_MULTIPLICADOR:         10001001,0x89
+SHIFTRIGHT_A:                   10010010,0x92
+CAMBIAR_A1:                     100011011,0x9B
 CAMBIO_A1:
 CAMBIO_0:
 CAMBIAR2_A1:
