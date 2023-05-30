@@ -108,7 +108,7 @@ CAMBIO_MULTIPLICADOR:
         AND A, A
         JZ
         CAMBIAR2_MULTIPLICADOR
-        JMP SUMAR_Q
+        JMP SUMAR_Q+0
         
 SUMAR_Q+0:
         MOV ACC, CTE
@@ -210,7 +210,7 @@ CAMBIO_1:
         ADD A, A
         JZ
         ULTIMO_CAMBIO
-        JMP SHIFT_Q1
+        JMP SHIFTRIGHT_Q1
         
 ULTIMO_CAMBIO:
         MOV ACC, CTE
