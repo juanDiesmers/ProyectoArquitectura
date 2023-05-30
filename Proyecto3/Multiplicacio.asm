@@ -141,8 +141,8 @@ CAMBIAR2_MULTIPLICADOR:
         MOV ACC, A
         MOV [DPTR], ACC
         JUMP SHIFTRIGHT_Q1
+  
         
-
 SHIFTRIGHT_A:
         ; Desplazamiento a la derecha de A (Shift Right)
         MOV ACC, CTE ; Cargamos el valor de A1 en ACC
