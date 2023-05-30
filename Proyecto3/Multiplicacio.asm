@@ -365,13 +365,17 @@ COUNT:          0x08,00001000   ; valor en 0x16C
 A1:             0x00,00000000   ; valor en 0x16D
 Q1:             0x00,00000000   ; valor en 0x16E
 VALOR:          0x00,00000000   ; valor en 0x16F
-MSB: "Instruccion Nueva" ; opcode 0b10000000
-LSB: "Instruccion Nueva" ; opcode 0b10001000
+
+
 
 MSB_A1:         0x00,00000000   ; valor en 0x173
 LSB_A1:         0x00,00000000   ; valor en 0x174
 M_MSB:          0x01,00000001   ; valor en 0x175
 M_LSB:          0x08,00001000   ; valor en 0x176
+
+MSB: "Instruccion Nueva" ; opcode 0b10000000
+LSB: "Instruccion Nueva" ; opcode 0b10001000
+LSR: "Instruccion Nueva" ; opcode 0b10010000
 
 LOOP:                           00000000,0x00
 CHECK00:                        00100100,0x36
