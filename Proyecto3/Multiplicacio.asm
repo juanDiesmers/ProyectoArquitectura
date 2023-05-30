@@ -294,9 +294,7 @@ STORE_A1:
         MOV ACC, A       ; Carga A en ACC
         MOV [DPTR],ACC   ; Almacena el valor de ACC en la direccion de memoria apuntada por DPTR
         JMP SHIFTRIGHT_A ; Salta a SHIFT_RIGHT
-
-
-
+        
 COUNT:
         MOV ACC, COUNT         # load address of COUNT in ACC
         MOV DPTR, ACC          # move address of COUNT to DPTR
