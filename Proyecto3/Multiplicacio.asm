@@ -179,7 +179,7 @@ CAMBIO_0:
         MOV A, ACC
         ADD A, A
         JZ
-        CAMBIAR_A1 ; Si el valor es 1, le restamos la inversa a la mascara
+        CAMBIAR2_A1 ; Si el valor es 1, le restamos la inversa a la mascara
         MOV ACC, CTE
         M_MSB
         MOV DPTR, ACC
@@ -192,6 +192,13 @@ CAMBIO_0:
         MOV ACC, [DPTR]
         ADD ACC, A
         MOV A, ACC
+        
+CAMBIAR2_A1:
+        MOV ACC, CTE
+        A1
+        MOV DPTR, ACC
+        MOV ACC, A
+        MOV [DPTR], ACC
         
 CAMBIO_1:
         MOV ACC, CTE
@@ -218,7 +225,7 @@ ULTIMO_CAMBIO:
         ADD ACC, A
         MOV A, ACC
         
-CAMBIAR2_A1:
+CAMBIAR3_A1:
         MOV ACC, CTE
         A1
         MOV DPTR, ACC
