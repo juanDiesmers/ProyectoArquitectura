@@ -141,8 +141,8 @@ CAMBIAR2_MULTIPLICADOR:
         MOV ACC, A
         MOV [DPTR], ACC
         JUMP SHIFTRIGHT_Q1
-  
-        
+
+
 SHIFTRIGHT_A:
         ; Desplazamiento a la derecha de A (Shift Right)
         MOV ACC, CTE ; Cargamos el valor de A1 en ACC
@@ -377,7 +377,7 @@ LOOP:                           00000000,0x00
 CHECK00:                        00100100,0x36
 CHEK10_01:                      00101011,0x2B
 MSB_A1:                         00111010,0x3A
-LSB_A1:                         00111010,0x3A
+LSB_A1:                         00111010,0x48
 SHIFTRIGHT_MULTIPLICADOR:       01010110,0x56
 CAMBIAR_MULTIPLICADOR:          01011110,0x5E
 CAMBIO_MULTIPLICADOR:           01100101,0x65
@@ -386,16 +386,16 @@ SUMAR_Q+1:                      01111100,0x7C
 CAMBIAR2_MULTIPLICADOR:         10001001,0x89
 SHIFTRIGHT_A:                   10010010,0x92
 CAMBIAR_A1:                     100011011,0x9B
-CAMBIO_A1:
-CAMBIO_0:
-CAMBIAR2_A1:
-CAMBIO_1:
-ULTIMO_CAMBIO:
-CAMBIAR3_A1:
-SHIFTRIGHT_Q1:
-SUBB:
-Add: 
-STORE_A1: 
-COUNT:
-STORE_COUNT: 
-FIN_LOOP:
+CAMBIO_A1:                      10100011,0xA3
+CAMBIO_0:                       10101101,0xAD
+CAMBIAR2_A1:                    11000100,0xC4
+CAMBIO_1:                       11001011,0xCB
+ULTIMO_CAMBIO:                  110101111,0xD7
+CAMBIAR3_A1:                    11100100,0xE4
+SHIFTRIGHT_Q1:                  11101100,0xEC
+SUBB:                           11111001,F9
+Add:                            000100010000,0x110
+STORE_A1:                       000100100111,0x127
+COUNT:                          000100101110,0x12E
+STORE_COUNT:                    000100111010,0x13A
+FIN_LOOP:                       000101000001,0x141
