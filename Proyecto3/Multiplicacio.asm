@@ -140,6 +140,7 @@ CAMBIAR2_MULTIPLICADOR:
         MOV DPTR, ACC
         MOV ACC, A
         MOV [DPTR], ACC
+        JUMP SHIFTRIGHT_Q1
         
 
 SHIFTRIGHT_A:
@@ -223,6 +224,7 @@ CAMBIAR2_A1:
         MOV DPTR, ACC
         MOV ACC, A
         MOV [DPTR], ACC
+        JUMP SHIFTRIGHT_MULTIPLICADOR
                 
 SHIFTRIGHT_Q1:
         MOV ACC, CTE
