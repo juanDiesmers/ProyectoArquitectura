@@ -29,7 +29,7 @@ LOOP:   ;Inicio del loop
         MOV DPTR, ACC
         MOV ACC,[DPTR] ; Recuperamos el valor de Q del registro A
         INV ACC ; invirete todos los bits en ACC
-        JZ SHIFT_RIGHT ; si el valor al momento de hacer INV ACC y JZ ve que Q = 0, eso dice que Q si es 1
+        JZ SHIFTRIGHT_A ; si el valor al momento de hacer INV ACC y JZ ve que Q = 0, eso dice que Q si es 1
         ; por lo tanto Q y Q-1 = 11
         JMP CHEK10_01
         
@@ -37,7 +37,7 @@ CHECK00:
         MOV ACC,VALOR; Recuperamos Q del registro valor
         MOV DPTR, ACC
         MOV ACC,[DPTR] 
-        JZ SHIFT_RIGHT ; Si Q es tambien 0 osea Q y Q-1 = 00
+        JZ SHIFTRIGHT_A ; Si Q es tambien 0 osea Q y Q-1 = 00
         JMP CHEK10_01 ; Si Q no es 0, entonces Q y Q-1 podrian ser 10 o 01
 
 CHEK10_01:
@@ -293,7 +293,7 @@ STORE_A1:
         MOV DPTR, ACC    ; Mueve el valor de ACC a DPTR
         MOV ACC, A       ; Carga A en ACC
         MOV [DPTR],ACC   ; Almacena el valor de ACC en la direccion de memoria apuntada por DPTR
-        JMP SHIFT_RIGHT  ; Salta a SHIFT_RIGHT
+        JMP SHIFTRIGHT_A ; Salta a SHIFT_RIGHT
 
 
 
@@ -369,3 +369,4 @@ MSB_A1:         0x00,
 LSB_A1:         0x00,
 M_MSB:          0x01,
 M_LSB:          0x08,
+
