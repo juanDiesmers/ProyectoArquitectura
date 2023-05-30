@@ -393,7 +393,7 @@ CAMBIO_1:                       11001011,0xCB
 ULTIMO_CAMBIO:                  110101111,0xD7
 CAMBIAR3_A1:                    11100100,0xE4
 SHIFTRIGHT_Q1:                  11101100,0xEC
-SUBB:                           11111001,F9
+SUBB:                           11111001,0xF9
 Add:                            000100010000,0x110
 STORE_A1:                       000100100111,0x127
 COUNT:                          000100101110,0x12E
