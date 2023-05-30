@@ -280,17 +280,17 @@ Add:   ; si Q0,Q-1 == 01 suma M a A
         ADD ACC,A           ; Suma el valor de ACC al valor de A
         MOV A,ACC       
         JMP STORE_A1        ; Salta a STORE_A1
-/*
-La función llamada "Add" se utiliza para sumar el valor de un registro M al valor de un registro A. 
-En este caso específico, si los bits Q0 y Q-1 son iguales a 01, se activa la función y suma el valor M a A.
 
-La función comienza cargando el valor de A1 en el registro ACC. Luego, mueve el valor de ACC a DPTR, 
-que es un registro especial que apunta a una dirección de memoria. A continuación, carga el valor 
-almacenado en la dirección de memoria apuntada por DPTR en ACC y lo mueve a A.
+;La función llamada "Add" se utiliza para sumar el valor de un registro M al valor de un registro A. 
+;En este caso específico, si los bits Q0 y Q-1 son iguales a 01, se activa la función y suma el valor M a A.
 
-Después, carga el valor de M en ACC y lo suma al valor de A. Finalmente, salta a la dirección de memoria 
-llamada STORE_A1 para almacenar el resultado en el registro A1.
-*/
+;La función comienza cargando el valor de A1 en el registro ACC. Luego, mueve el valor de ACC a DPTR, 
+;que es un registro especial que apunta a una dirección de memoria. A continuación, carga el valor 
+;almacenado en la dirección de memoria apuntada por DPTR en ACC y lo mueve a A.
+
+;Después, carga el valor de M en ACC y lo suma al valor de A. Finalmente, salta a la dirección de memoria 
+;llamada STORE_A1 para almacenar el resultado en el registro A1.
+
 
 STORE_A1: 
         MOV ACC, A1      ; Carga A1 en ACC
