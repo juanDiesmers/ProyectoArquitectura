@@ -356,28 +356,16 @@ MSB:
         AND A, ACC ; hacemos and para encontrar el msb y descartar lo demas
         MOV ACC, A ; guardamos el valor en acc
                     
-MULTIPLICADO: 
-        0x07
-MULTIPLICADOR: 
-        0x03
-COUNT: 
-        0x08
-A1:     
-        0x00
-Q1:
-        0x00
-VALOR:
-        0x00    
+MULTIPLICADO:   0x07,
+MULTIPLICADOR:  0x03,
+COUNT:          0x08,
+A1:             0x00,
+Q1:             0x00,
+VALOR:          0x00,   
 MSB: "Instruccion Nueva" ; opcode 0b10000000
 LSB: "Instruccion Nueva" ; opcode 0b10001000
 
-MSB_A1:
-        0x00
-LSB_A1:
-        0x00
-M_MSB:
-        0x01
-M_LSB:
-        0x08
-
-      
+MSB_A1:         0x00,
+LSB_A1:         0x00,
+M_MSB:          0x01,
+M_LSB:          0x08,
