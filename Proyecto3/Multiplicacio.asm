@@ -245,8 +245,6 @@ SHIFTRIGHT_Q1:
         MOV ACC, A
         MOV [DPTR], ACC
         JMP COUNT
-        
-CONTINUE:
 
 SUBB:  ; si Q0, Q-1 == 10 resta M a A
         MOV ACC, A1        ; Carga A1 en Acc
@@ -270,7 +268,6 @@ SUBB:  ; si Q0, Q-1 == 10 resta M a A
 
 ;Después, carga el valor de M en ACC y lo invierte. Luego, suma el valor de ACC al valor de A. 
 ;Finalmente, salta a la dirección de memoria llamada STORE_A1 para almacenar el resultado en el registro A1.
-
 
 Add:   ; si Q0,Q-1 == 01 suma M a A
         MOV ACC, A1         ; Carga A1 en Acc
@@ -301,7 +298,7 @@ STORE_A1:
         MOV ACC, A       ; Carga A en ACC
         MOV [DPTR],ACC   ; Almacena el valor de ACC en la direccion de memoria apuntada por DPTR
         JMP SHIFTRIGHT_A ; Salta a SHIFT_RIGHT
-        
+
 COUNT:
         MOV ACC, COUNT         # load address of COUNT in ACC
         MOV DPTR, ACC          # move address of COUNT to DPTR
@@ -314,11 +311,12 @@ COUNT:
         MOV A,ACC             # A = [COUNT]-1     
         JMP STORE_COUNT        # go to store_COUNT
 
-STORE_COUNT: MOV ACC, COUNT    # load address of COUNT in ACc       
-         MOV DPTR, ACC         # move address of COUNT to DPTR
-         MOV ACC, A            # move value to store from a to ACC
-         MOV [DPTR], ACC       # store value in [COUNT]
-         JMP LOOP              # jump back to LOOP
+STORE_COUNT: 
+        MOV ACC, COUNT    # load address of COUNT in ACc       
+        MOV DPTR, ACC         # move address of COUNT to DPTR
+        MOV ACC, A            # move value to store from a to ACC
+        MOV [DPTR], ACC       # store value in [COUNT]
+        JMP LOOP              # jump back to LOOP
 
 FIN_LOOP:
 
@@ -375,3 +373,29 @@ LSB_A1:         0x00,
 M_MSB:          0x01,
 M_LSB:          0x08,
 
+LOOP:
+CHECK00:
+CHEK10_01:
+MSB_A1:
+LSB_A1:
+SHIFTRIGHT_MULTIPLICADOR:
+CAMBIAR_MULTIPLICADOR:
+CAMBIO_MULTIPLICADOR:
+SUMAR_Q+0:
+SUMAR_Q+1:
+CAMBIAR2_MULTIPLICADOR:
+SHIFTRIGHT_A:
+CAMBIAR_A1:
+CAMBIO_A1:
+CAMBIO_0:
+CAMBIAR2_A1:
+CAMBIO_1:
+ULTIMO_CAMBIO:
+CAMBIAR3_A1:
+SHIFTRIGHT_Q1:
+SUBB:
+Add: 
+STORE_A1: 
+COUNT:
+STORE_COUNT: 
+FIN_LOOP:
